@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPL Prediction Unlock</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+
+        .unlock-container {
+            width: 80%;
+            max-width: 400px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .unlock-container h2 {
+            margin-bottom: 20px;
+        }
+
+        .unlock-container p {
+            margin-bottom: 10px;
+        }
+
+        .unlock-container input[type="text"],
+        .unlock-container input[type="file"] {
+            width: calc(100% - 12px);
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .unlock-container button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .unlock-container button:hover {
+            background-color: #0056b3;
+        }
+
+        #unlockMessage {
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        #paymentSection {
+            display: block;
+        }
+
+        #predictionSection {
+            display: none;
+        }
+
+        #paymentScreenshot {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="unlock-container">
+
+        <div id="paymentSection">
+            <h2>IPL Prediction - Payment</h2>
+            <p>To unlock the prediction feature, please make a payment to the following UPI ID:</p>
+            <p><strong>9122506874@omni</strong></p>
+            <p>Or use this UPI link:</p>
+            <p><a href="upi://pay?pa=9122506874@omni&pn=aniket%20pratap%20singh" target="_blank">Pay via UPI</a></p>
+            <p>After payment, enter your UTR ID (Transaction ID) below (numbers only):</p>
+            <input type="text" id="utrId" placeholder="Enter UTR ID (Numbers Only)">
+            <button onclick="verifyPayment()">Verify Payment</button>
+            <div id="paymentMessage"></div>
+            <button onclick="showScreenshotUpload()">Upload Screenshot</button>
+        </div>
+
+        <div id="paymentScreenshot">
+            <h2>Upload Payment Screenshot</h2>
+            <input type="file" id="screenshotUpload" accept="image/*">
+            <button onclick="submitScreenshot()">Submit Screenshot</button>
+            <div id="screenshotMessage"></div>
+            <button onclick="showPaymentSection()">Back to Payment</button>
+        </div>
+
+        <div id="predictionSection">
+            <h2>IPL Match Prediction - Unlocked!</h2>
+            <p>Match prediction feature is now unlocked.</p>
+            <p>Team 1: <select id="team1">
+                <option value="Chennai Super Kings">Chennai Super Kings</option>
+                <option value="Mumbai Indians">Mumbai Indians</option>
+                <option value="Royal Challengers Bangalore">Royal Challengers Bangalore</option>
+                <option value="Kolkata Knight Riders">Kolkata Knight Riders</option>
+                <option value="Delhi Capitals">Delhi Capitals</option>
+                <option value="Punjab Kings">Punjab Kings</option>
+                <option value="Sunrisers Hyderabad">Sunrisers Hyderabad</option>
+                <option value="Rajasthan Royals">Rajasthan Royals</option>
+                <option value="Lucknow Super Giants">Lucknow Super Giants</option>
+                <option value="Gujarat Titans">Gujarat Titans</option>
+            </select></p>
+            <p>Team 2: <select id="team2">
+                <option value="Chennai Super Kings">Chennai Super Kings</option>
+                <option value="Mumbai Indians">Mumbai Indians</option>
+                <option value="Royal Challengers Bangalore">Royal Challengers Bangalore</option>
+                <option value="Kolkata Knight Riders">Kolkata Knight Riders</option>
+                <option value="Delhi Capitals">Delhi Capitals</option>
+                <option value="Punjab Kings">Punjab Kings</option>
+                <option value="Sunrisers Hyderabad">Sunrisers Hyderabad</option>
+                <option value="Rajasthan Royals">Rajasthan Royals</option>
+                <option value="Lucknow Super Giants">Lucknow Super Giants</option>
+                <option value="Gujarat Titans">Gujarat Titans</option>
+            </select></p>
+            <button onclick="showRandomWinningTeam()">Show Random Winning Team</button>
+            <div id="predictionResult"></div>
+        </div>
+
+    </div>
+
+    <script>
+        function verifyPayment() {
+            const utrId = document.getElementById("utrId").value;
+            const paymentMessage = document.getElementById("paymentMessage");
+
+            if (utrId) {
+                if (/^\d+$/.test(utrId)) {
+                    paymentMessage.textContent = "Verifying Payment...";
+
+                    setTimeout(function() {
+                        if (simulatePaymentVerification(utrId)) {
+                            paymentMessage.textContent = "Payment Verified!";
+                            document.getElementById("paymentSection").style.display = "none";
+                            document.getElementById("predictionSection").style.display = "block";
+                        } else {
+                            paymentMessage.textContent = "Payment Verification Failed. Please try again.";
+                        }
+                    }, 2000);
+                } else {
+                    paymentMessage.textContent = "UTR ID must contain numbers only.";
+                }
+            } else {
+                paymentMessage.textContent = "Please enter your UTR ID.";
+            }
+        }
+
+        function simulatePaymentVerification(utrId) {
+            return Math.random() < 0.8;
+        }
+
+        function showRandomWinningTeam() {
+            const team1 = document.getElementById("team1").value;
+            const team2 = document.getElementById("team2").value;
+            const predictionResult = document.getElementById("predictionResult");
+
+            if (team1 === team2) {
+                predictionResult.textContent = "Please select two different teams.";
+                return;
+            }
+
+            const teams = [team1, team2];
+            const randomIndex = Math.floor(Math.random() * teams.length);
+            const winningTeam = teams[randomIndex];
+
+            predictionResult.textContent = `Winning Team: ${winningTeam}`;
+        }
+
+        function showScreenshotUpload() {
+            document.getElementById("paymentSection").style.display = "none";
+            document.getElementById("paymentScreenshot").style.display = "block";
+        }
+
+        function showPaymentSection() {
+            document.getElementById("paymentScreenshot").style.display = "none";
+            document.getElementById("paymentSection").style.display = "block";
+        }
+
+        function submitScreenshot() {
+            const screenshotInput = document.getElementById("screenshotUpload");
+            const screenshotMessage = document.getElementById("screenshotMessage");
+
+            if (screenshotInput.files.length > 0) {
+                screenshotMessage.textContent = "Screenshot uploaded. Pending verification.";
+                // In a real application, you would send the file to a server for processing.
+            } else {
+                screenshotMessage.textContent = "Please select a screenshot to upload.";
+            }
+        }
+
+    </script>
+</body>
+</html>
